@@ -6,7 +6,7 @@
 <title>RROLL Shop</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
 <style>
-/* --- BASIC RESET --- */
+/* --- RESET --- */
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:black; color:#00ff99; font-family:'Orbitron', monospace; overflow-x:hidden; }
 
@@ -14,42 +14,39 @@ body { background:black; color:#00ff99; font-family:'Orbitron', monospace; overf
 #bgCanvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
 
 /* --- HEADER --- */
-header { position:fixed; top:0; left:0; width:100%; display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; z-index:10; }
+header { position:fixed; top:0; left:0; width:100%; display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; z-index:10; background:rgba(0,0,0,0.8); }
 #logo { display:flex; gap:2px; font-size:2rem; text-transform:uppercase; }
 .logo-letter { position:relative; color:#00ff99; text-shadow:0 0 5px #00ff99,0 0 10px #00ff99; animation:glitch 2s infinite; }
 @keyframes glitch {
-  0% {transform:translate(0,0); text-shadow:0 0 5px #00ff99,0 0 10px #00ff99;}
-  10% {transform:translate(-1px,1px); text-shadow:0 0 8px #00ff99,0 0 15px #00ff99;}
-  20% {transform:translate(1px,-1px); text-shadow:0 0 5px #00ff99,0 0 12px #00ff99;}
-  30% {transform:translate(-1px,-1px); text-shadow:0 0 10px #00ff99,0 0 20px #00ff99;}
-  40% {transform:translate(1px,1px); text-shadow:0 0 8px #00ff99,0 0 18px #00ff99;}
-  50% {transform:translate(0,0); text-shadow:0 0 5px #00ff99,0 0 10px #00ff99;}
-  60% {transform:translate(-1px,0); text-shadow:0 0 12px #00ff99,0 0 22px #00ff99;}
-  70% {transform:translate(1px,0); text-shadow:0 0 10px #00ff99,0 0 20px #00ff99;}
-  80% {transform:translate(0,-1px); text-shadow:0 0 8px #00ff99,0 0 15px #00ff99;}
-  90% {transform:translate(0,1px); text-shadow:0 0 10px #00ff99,0 0 20px #00ff99;}
-  100% {transform:translate(0,0); text-shadow:0 0 5px #00ff99,0 0 10px #00ff99;}
+  0%,50%,100% {transform:translate(0,0); text-shadow:0 0 5px #00ff99,0 0 10px #00ff99;}
+  10%,30%,70% {transform:translate(-1px,1px); text-shadow:0 0 8px #00ff99,0 0 15px #00ff99;}
+  20%,40%,80% {transform:translate(1px,-1px); text-shadow:0 0 5px #00ff99,0 0 12px #00ff99;}
+  60%,90% {transform:translate(-1px,-1px); text-shadow:0 0 10px #00ff99,0 0 20px #00ff99;}
 }
 
 /* --- HAMBURGER MENU --- */
 .hamburger { width:25px; cursor:pointer; display:flex; flex-direction:column; justify-content:space-between; height:18px; }
 .hamburger div { height:3px; background:#00ff99; border-radius:2px; transition:0.3s; }
-.menu { position:absolute; top:3rem; right:0; background:rgba(0,0,0,0.95); border:1px solid #00ff99; display:none; flex-direction:column; padding:1rem; gap:0.5rem; }
+.menu { position:absolute; top:3rem; right:0; background:rgba(0,0,0,0.95); border:1px solid #00ff99; display:none; flex-direction:column; padding:1rem; gap:0.5rem; z-index:15; }
 .menu a { color:#00ff99; text-decoration:none; font-size:1rem; transition:0.3s; }
 .menu a:hover { color:black; background:#00ff99; padding:0.2rem 0.5rem; border-radius:3px; }
 
 /* --- MAIN CONTENT --- */
-main { padding:6rem 2rem 2rem; display:flex; flex-wrap:wrap; justify-content:space-between; gap:1rem; z-index:5; position:relative; }
+main { padding:6rem 2rem 2rem; display:flex; flex-wrap:wrap; gap:1rem; position:relative; z-index:5; }
 
 /* --- PRODUCT BOXES --- */
-.product-box { position:relative; background:#111; flex:0 1 48%; height:200px; border-radius:12px; overflow:hidden; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; color:#00ff99; cursor:pointer; }
+.product-box { position:relative; background:#111; border-radius:12px; overflow:hidden; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; color:#00ff99; cursor:pointer; transition:0.3s; }
 .product-box span { font-size:1rem; margin-top:0.5rem; }
 .product-box button { margin-top:0.5rem; background:transparent; border:1px solid #00ff99; color:#00ff99; padding:0.5rem 1rem; border-radius:6px; cursor:pointer; transition:0.3s; }
 .product-box button:hover { background:#00ff99; color:black; }
 .product-box canvas { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
 
+/* --- STAGGERED LAYOUT --- */
+.product-full { flex:1 1 100%; height:200px; }
+.product-half { flex:0 1 48%; height:180px; }
+
 /* --- RESPONSIVE --- */
-@media(max-width:500px){ .product-box{ flex:0 1 48%; height:150px; } }
+@media(max-width:500px){ .product-half{ flex:0 1 48%; height:150px; } .product-full{ flex:1 1 100%; height:150px; } }
 </style>
 </head>
 <body>
@@ -78,27 +75,33 @@ main { padding:6rem 2rem 2rem; display:flex; flex-wrap:wrap; justify-content:spa
 
 <main id="mainContent">
   <!-- Product Boxes -->
-  <div class="product-box">
+  <div class="product-box product-full">
     <span>Product 1</span>
     <span>$19.99</span>
     <button>Purchase</button>
     <canvas></canvas>
   </div>
-  <div class="product-box">
+  <div class="product-box product-half">
     <span>Product 2</span>
     <span>$29.99</span>
     <button>Purchase</button>
     <canvas></canvas>
   </div>
-  <div class="product-box">
+  <div class="product-box product-half">
     <span>Product 3</span>
     <span>$9.99</span>
     <button>Purchase</button>
     <canvas></canvas>
   </div>
-  <div class="product-box">
+  <div class="product-box product-half">
     <span>Product 4</span>
     <span>$14.99</span>
+    <button>Purchase</button>
+    <canvas></canvas>
+  </div>
+  <div class="product-box product-half">
+    <span>Product 5</span>
+    <span>$24.99</span>
     <button>Purchase</button>
     <canvas></canvas>
   </div>
@@ -161,11 +164,11 @@ document.querySelectorAll('.product-box').forEach(box=>{
     let angle=0;
     function animateCircle(){
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.strokeStyle='rgba(0,255,153,0.8)';
+        ctx.strokeStyle='rgba(0,255,153,0.6)';
         ctx.lineWidth=2;
         ctx.beginPath();
-        const x=canvas.width/2 + Math.cos(angle)*canvas.width/3;
-        const y=canvas.height/2 + Math.sin(angle)*canvas.height/3;
+        const x=canvas.width/2 + Math.cos(angle)*canvas.width/3.5;
+        const y=canvas.height/2 + Math.sin(angle)*canvas.height/3.5;
         ctx.arc(x,y,20,0,Math.PI*2);
         ctx.stroke();
         angle+=0.03;
@@ -177,7 +180,7 @@ document.querySelectorAll('.product-box').forEach(box=>{
 
 // --- PRODUCT BUTTONS ---
 document.querySelectorAll('.product-box button').forEach(btn=>{
-    btn.addEventListener('click',()=>{alert('Purchase coming soon');});
+    btn.addEventListener('click',()=>{alert('Purchase menu coming soon');});
 });
 
 // --- MENU BUTTONS ---
