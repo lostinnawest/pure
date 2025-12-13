@@ -3,52 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RROLL Neon Shop</title>
+<title>RROLL Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
 <style>
-* {margin:0; padding:0; box-sizing:border-box; font-family:Arial,sans-serif;}
-body {background:black; color:#00ff99; overflow-x:hidden; position:relative;}
+/* --- BASIC RESET --- */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:black; color:#00ff99; font-family:'Orbitron', monospace; overflow-x:hidden; }
 
-/* --- FLOATING DOTS --- */
-#bgCanvas {position:fixed; top:0; left:0; width:100%; height:100%; z-index:0;}
+/* --- BACKGROUND DOTS --- */
+#bgCanvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
 
 /* --- HEADER --- */
-header {display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; position:relative; z-index:2;}
-#logo {font-size:1.6rem; font-weight:bold; display:flex; gap:2px;}
-
-/* --- LOGO LETTER ANIMATION --- */
-.logo-letter {text-shadow:0 0 5px #00ff99,0 0 10px #00ff99; animation:letterGlow 2s infinite alternate;}
-@keyframes letterGlow {0%{text-shadow:0 0 5px #00ff99,0 0 10px #00ff99;}50%{text-shadow:0 0 15px #00ff99,0 0 30px #00ff99;}100%{text-shadow:0 0 10px #00ff99,0 0 20px #00ff99;}}
+header { position:fixed; top:0; left:0; width:100%; display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; z-index:10; }
+#logo { display:flex; gap:2px; font-size:2rem; text-transform:uppercase; }
+.logo-letter { position:relative; color:#00ff99; text-shadow:0 0 5px #00ff99,0 0 10px #00ff99; animation:glitch 2s infinite; }
+@keyframes glitch {
+  0% {transform:translate(0,0); text-shadow:0 0 5px #00ff99,0 0 10px #00ff99;}
+  10% {transform:translate(-1px,1px); text-shadow:0 0 8px #00ff99,0 0 15px #00ff99;}
+  20% {transform:translate(1px,-1px); text-shadow:0 0 5px #00ff99,0 0 12px #00ff99;}
+  30% {transform:translate(-1px,-1px); text-shadow:0 0 10px #00ff99,0 0 20px #00ff99;}
+  40% {transform:translate(1px,1px); text-shadow:0 0 8px #00ff99,0 0 18px #00ff99;}
+  50% {transform:translate(0,0); text-shadow:0 0 5px #00ff99,0 0 10px #00ff99;}
+  60% {transform:translate(-1px,0); text-shadow:0 0 12px #00ff99,0 0 22px #00ff99;}
+  70% {transform:translate(1px,0); text-shadow:0 0 10px #00ff99,0 0 20px #00ff99;}
+  80% {transform:translate(0,-1px); text-shadow:0 0 8px #00ff99,0 0 15px #00ff99;}
+  90% {transform:translate(0,1px); text-shadow:0 0 10px #00ff99,0 0 20px #00ff99;}
+  100% {transform:translate(0,0); text-shadow:0 0 5px #00ff99,0 0 10px #00ff99;}
+}
 
 /* --- HAMBURGER MENU --- */
-.hamburger { cursor:pointer; display:flex; flex-direction:column; justify-content:space-between; height:18px; width:24px; }
-.hamburger div { height:3px; background:#00ff99; border-radius:2px; transition:0.3s; box-shadow:0 0 5px #00ff99,0 0 10px #00ff99; }
-.menu { position:absolute; top:3rem; right:2rem; background:#111; border:1px solid #00ff99; border-radius:10px; padding:1rem; display:none; flex-direction:column; gap:0.5rem; z-index:3; animation:fadeIn 0.5s ease forwards; }
-.menu a { color:#00ff99; text-decoration:none; font-size:0.95rem; transition:0.3s; text-shadow:0 0 3px #00ff99,0 0 6px #00ff99; display:inline-block; }
-.menu a span { display:inline-block; animation:menuLetterGlow 2s infinite alternate; }
-@keyframes menuLetterGlow {0%{text-shadow:0 0 3px #00ff99,0 0 6px #00ff99;}50%{text-shadow:0 0 10px #00ff99,0 0 20px #00ff99;}100%{text-shadow:0 0 5px #00ff99,0 0 10px #00ff99;}}
+.hamburger { width:25px; cursor:pointer; display:flex; flex-direction:column; justify-content:space-between; height:18px; }
+.hamburger div { height:3px; background:#00ff99; border-radius:2px; transition:0.3s; }
+.menu { position:absolute; top:3rem; right:0; background:rgba(0,0,0,0.95); border:1px solid #00ff99; display:none; flex-direction:column; padding:1rem; gap:0.5rem; }
+.menu a { color:#00ff99; text-decoration:none; font-size:1rem; transition:0.3s; }
+.menu a:hover { color:black; background:#00ff99; padding:0.2rem 0.5rem; border-radius:3px; }
 
-/* --- MAIN GRID --- */
-main { display:grid; grid-template-columns:repeat(2,1fr); gap:1.5rem; padding:3rem 2rem; position:relative; z-index:2; }
-.product-box { background:#111; border-radius:15px; position:relative; overflow:hidden; padding:1rem; display:flex; flex-direction:column; align-items:center; justify-content:space-between; transition:transform 0.3s, box-shadow 0.3s; filter:drop-shadow(0 0 5px #00ff99); }
-.product-box:hover { transform:scale(1.03); box-shadow:0 0 25px #00ff99,0 0 50px #00ff99; }
-.product-box img { width:100%; height:120px; object-fit:cover; margin-bottom:0.8rem; border-radius:10px; }
-.product-box h3, .product-box p { text-shadow:0 0 3px #00ff99,0 0 6px #00ff99; } 
-.purchase-btn { border:1px solid #00ff99; padding:0.5rem 1rem; background:transparent; color:#00ff99; cursor:pointer; transition:0.3s; border-radius:8px; text-shadow:0 0 3px #00ff99,0 0 6px #00ff99; }
-.purchase-btn:hover { background:#00ff99; color:black; box-shadow:0 0 12px #00ff99,0 0 24px #00ff99; }
+/* --- MAIN CONTENT --- */
+main { padding:6rem 2rem 2rem; display:flex; flex-wrap:wrap; justify-content:space-between; gap:1rem; z-index:5; position:relative; }
 
-/* --- NEON SNAKE BORDER --- */
-.product-box::before {content:"";position:absolute;top:0;left:0;width:100%;height:100%;border:2px solid #00ff99;border-radius:15px;pointer-events:none;background:linear-gradient(90deg,transparent,#00ff99,transparent);background-size:200% 100%;animation:neonSnake 3s linear infinite, borderGlow 2s infinite alternate;}
-@keyframes neonSnake {0%{background-position:0% 0;}100%{background-position:200% 0;}}
-@keyframes borderGlow {0%{box-shadow:0 0 5px #00ff99;}50%{box-shadow:0 0 15px #00ff99;}100%{box-shadow:0 0 5px #00ff99;}}
+/* --- PRODUCT BOXES --- */
+.product-box { position:relative; background:#111; flex:0 1 48%; height:200px; border-radius:12px; overflow:hidden; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; color:#00ff99; cursor:pointer; }
+.product-box span { font-size:1rem; margin-top:0.5rem; }
+.product-box button { margin-top:0.5rem; background:transparent; border:1px solid #00ff99; color:#00ff99; padding:0.5rem 1rem; border-radius:6px; cursor:pointer; transition:0.3s; }
+.product-box button:hover { background:#00ff99; color:black; }
+.product-box canvas { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
 
-/* --- MODALS --- */
-.modal-bg {display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:5; justify-content:center; align-items:center;}
-.modal-content {background:#111; border:2px solid #00ff99; padding:2rem; width:300px; text-align:center; color:#00ff99; border-radius:10px; text-shadow:0 0 3px #00ff99,0 0 6px #00ff99;}
-.modal-content button {margin-top:1rem; border-radius:6px; border:1px solid #00ff99; background:transparent; color:#00ff99; cursor:pointer; text-shadow:0 0 3px #00ff99,0 0 6px #00ff99;}
-.modal-content button:hover {background:#00ff99; color:black; box-shadow:0 0 12px #00ff99,0 0 24px #00ff99;}
-
-/* --- ANIMATIONS --- */
-@keyframes fadeIn {from{opacity:0; transform:translateY(-10px);}to{opacity:1; transform:translateY(0);}}
+/* --- RESPONSIVE --- */
+@media(max-width:500px){ .product-box{ flex:0 1 48%; height:150px; } }
 </style>
 </head>
 <body>
@@ -66,90 +67,127 @@ main { display:grid; grid-template-columns:repeat(2,1fr); gap:1.5rem; padding:3r
   <div style="position:relative;">
     <div class="hamburger" id="hamburgerBtn"><div></div><div></div><div></div></div>
     <div class="menu" id="menuItems">
-      <a href="#" id="loginLink"><span>Login</span></a>
-      <a href="#" id="signupLink"><span>Signup</span></a>
-      <a href="#" id="accountLink"><span>Account</span></a>
-      <a href="#" id="balanceLink"><span>Balance</span></a>
-      <a href="#" id="cartLink"><span>Cart</span></a>
+      <a href="#">Login</a>
+      <a href="#">Signup</a>
+      <a href="#">Account</a>
+      <a href="#">Balance</a>
+      <a href="#">Cart</a>
     </div>
   </div>
 </header>
 
 <main id="mainContent">
-  <div class="product-box" data-name="Product 1" data-price="$19.99">
-    <img src="https://via.placeholder.com/250x120" alt="Product">
-    <h3>Product 1</h3>
-    <p>$19.99</p>
-    <button class="purchase-btn">Purchase</button>
+  <!-- Product Boxes -->
+  <div class="product-box">
+    <span>Product 1</span>
+    <span>$19.99</span>
+    <button>Purchase</button>
+    <canvas></canvas>
   </div>
-  <div class="product-box" data-name="Product 2" data-price="$29.99">
-    <img src="https://via.placeholder.com/250x120" alt="Product">
-    <h3>Product 2</h3>
-    <p>$29.99</p>
-    <button class="purchase-btn">Purchase</button>
+  <div class="product-box">
+    <span>Product 2</span>
+    <span>$29.99</span>
+    <button>Purchase</button>
+    <canvas></canvas>
+  </div>
+  <div class="product-box">
+    <span>Product 3</span>
+    <span>$9.99</span>
+    <button>Purchase</button>
+    <canvas></canvas>
+  </div>
+  <div class="product-box">
+    <span>Product 4</span>
+    <span>$14.99</span>
+    <button>Purchase</button>
+    <canvas></canvas>
   </div>
 </main>
 
-<!-- PURCHASE MODAL -->
-<div class="modal-bg" id="purchaseModal">
-  <div class="modal-content">
-    <h2 id="modalProductName">Product</h2>
-    <p id="modalProductPrice">$0.00</p>
-    <button id="confirmPurchase">Confirm</button>
-    <button id="cancelPurchase">Cancel</button>
-  </div>
-</div>
-
-<!-- ACCOUNT MODAL -->
-<div class="modal-bg" id="accountModal">
-  <div class="modal-content">
-    <h2>Account</h2>
-    <p>Coming Soon!</p>
-    <button id="closeAccount">Close</button>
-  </div>
-</div>
-
 <script>
-// --- FLOATING DOTS ---
-const canvas=document.getElementById('bgCanvas');
-const ctx=canvas.getContext('2d');
-canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-const dots=[]; for(let i=0;i<80;i++){dots.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*2+1, vx:(Math.random()-0.5)*0.5, vy:(Math.random()-0.5)*0.5});}
-function animateDots(){ctx.clearRect(0,0,canvas.width,canvas.height);dots.forEach(d=>{d.x+=d.vx; d.y+=d.vy; if(d.x<0||d.x>canvas.width)d.vx*=-1;if(d.y<0||d.y>canvas.height)d.vy*=-1;ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,Math.PI*2);ctx.fillStyle='rgba(0,255,153,0.8)';ctx.fill();});requestAnimationFrame(animateDots);}
+// --- FLOATING DOTS BACKGROUND ---
+const canvasBG = document.getElementById('bgCanvas');
+const ctxBG = canvasBG.getContext('2d');
+canvasBG.width = window.innerWidth;
+canvasBG.height = window.innerHeight;
+const dots = [];
+const numDots = 100;
+for(let i=0;i<numDots;i++){
+    dots.push({x:Math.random()*canvasBG.width,y:Math.random()*canvasBG.height,r:Math.random()*2+1,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3});
+}
+function animateDots(){
+    ctxBG.clearRect(0,0,canvasBG.width,canvasBG.height);
+    dots.forEach(d=>{
+        ctxBG.beginPath();
+        ctxBG.arc(d.x,d.y,d.r,0,Math.PI*2);
+        ctxBG.fillStyle='rgba(0,255,153,0.5)';
+        ctxBG.fill();
+        d.x += d.vx; d.y += d.vy;
+        if(d.x<0||d.x>canvasBG.width)d.vx*=-1;
+        if(d.y<0||d.y>canvasBG.height)d.vy*=-1;
+    });
+    requestAnimationFrame(animateDots);
+}
 animateDots();
-window.addEventListener('resize',()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight;});
+window.addEventListener('resize',()=>{canvasBG.width=window.innerWidth;canvasBG.height=window.innerHeight;});
 
-// --- MENU TOGGLE ---
-const hamburgerBtn=document.getElementById('hamburgerBtn');
-const menuItems=document.getElementById('menuItems');
+// --- HAMBURGER MENU ---
+const hamburger=document.getElementById('hamburgerBtn');
+const menu=document.getElementById('menuItems');
 let menuOpen=false;
-hamburgerBtn.onclick=()=>{ menuOpen=!menuOpen; menuItems.style.display=menuOpen?'flex':'none'; }
-
-// --- PURCHASE MODAL ---
-const purchaseModal=document.getElementById('purchaseModal');
-const modalProductName=document.getElementById('modalProductName');
-const modalProductPrice=document.getElementById('modalProductPrice');
-document.querySelectorAll('.purchase-btn').forEach(btn=>{
-  btn.onclick=e=>{
-    const box=e.target.closest('.product-box');
-    modalProductName.textContent=box.dataset.name;
-    modalProductPrice.textContent=box.dataset.price;
-    purchaseModal.style.display='flex';
-  };
+hamburger.addEventListener('click',()=>{
+    menuOpen=!menuOpen;
+    menu.style.display = menuOpen ? 'flex' : 'none';
+    if(menuOpen){
+        menu.style.opacity=0;
+        menu.style.transform='translateY(-10px)';
+        let op=0,pos=-10;
+        const anim=setInterval(()=>{
+            op+=0.05;
+            pos+=1;
+            menu.style.opacity=op;
+            menu.style.transform=`translateY(${pos}px)`;
+            if(op>=1){clearInterval(anim); menu.style.transform='translateY(0)';}
+        },15);
+    }
 });
-document.getElementById('cancelPurchase').onclick=()=>{purchaseModal.style.display='none';};
-document.getElementById('confirmPurchase').onclick=()=>{alert("Coming Soon: "+modalProductName.textContent); purchaseModal.style.display='none';};
 
-// --- ACCOUNT MODAL ---
-const accountModal=document.getElementById('accountModal');
-document.getElementById('accountLink').onclick=()=>{ accountModal.style.display='flex'; };
-document.getElementById('closeAccount').onclick=()=>{ accountModal.style.display='none'; };
+// --- NEON CIRCLE ANIMATION ON BOXES ---
+document.querySelectorAll('.product-box').forEach(box=>{
+    const canvas=box.querySelector('canvas');
+    const ctx=canvas.getContext('2d');
+    canvas.width=box.offsetWidth;
+    canvas.height=box.offsetHeight;
+    let angle=0;
+    function animateCircle(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.strokeStyle='rgba(0,255,153,0.8)';
+        ctx.lineWidth=2;
+        ctx.beginPath();
+        const x=canvas.width/2 + Math.cos(angle)*canvas.width/3;
+        const y=canvas.height/2 + Math.sin(angle)*canvas.height/3;
+        ctx.arc(x,y,20,0,Math.PI*2);
+        ctx.stroke();
+        angle+=0.03;
+        requestAnimationFrame(animateCircle);
+    }
+    animateCircle();
+    window.addEventListener('resize',()=>{canvas.width=box.offsetWidth; canvas.height=box.offsetHeight;});
+});
 
-// --- OTHER MENU BUTTONS ---
-document.getElementById('loginLink').onclick=()=>{ alert('Login clicked'); };
-document.getElementById('signupLink').onclick=()=>{ alert('Signup clicked'); };
-document.getElementById('balanceLink').onclick=()=>{ alert('Balance clicked'); };
-document.getElementById('cartLink').onclick=()=>{ alert('Cart clicked'); };
+// --- PRODUCT BUTTONS ---
+document.querySelectorAll('.product-box button').forEach(btn=>{
+    btn.addEventListener('click',()=>{alert('Purchase coming soon');});
+});
+
+// --- MENU BUTTONS ---
+document.querySelectorAll('.menu a').forEach(a=>{
+    a.addEventListener('click',(e)=>{
+        e.preventDefault();
+        alert(a.textContent+' coming soon');
+    });
+});
 </script>
+
 </body>
 </html>
