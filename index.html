@@ -6,47 +6,55 @@
 <title>RROLL Shop</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
 <style>
-/* --- RESET --- */
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:black; color:#00ff99; font-family:'Orbitron', monospace; overflow-x:hidden; }
+canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
 
-/* --- BACKGROUND DOTS --- */
-#bgCanvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
-
-/* --- HEADER --- */
-header { position:fixed; top:0; left:0; width:100%; display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; z-index:10; background:rgba(0,0,0,0.8); }
-#logo { display:flex; gap:2px; font-size:2rem; text-transform:uppercase; }
-.logo-letter { position:relative; color:#00ff99; text-shadow:0 0 5px #00ff99,0 0 10px #00ff99; animation:glitch 2s infinite; }
+/* HEADER & LOGO */
+header { position:fixed; top:0; left:0; width:100%; display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; z-index:10; }
+.logo { font-size:1.8rem; color:#00ff99; cursor:pointer; position:relative; }
+.logo span { display:inline-block; animation:glitch 2s infinite; }
 @keyframes glitch {
-  0%,50%,100% {transform:translate(0,0); text-shadow:0 0 5px #00ff99,0 0 10px #00ff99;}
-  10%,30%,70% {transform:translate(-1px,1px); text-shadow:0 0 8px #00ff99,0 0 15px #00ff99;}
-  20%,40%,80% {transform:translate(1px,-1px); text-shadow:0 0 5px #00ff99,0 0 12px #00ff99;}
-  60%,90% {transform:translate(-1px,-1px); text-shadow:0 0 10px #00ff99,0 0 20px #00ff99;}
+  0%, 19%, 21%, 50%, 52%, 100% { transform:translate(0);}
+  20% { transform:translate(-2px,2px);}
+  51% { transform:translate(2px,-2px);}
 }
 
-/* --- HAMBURGER MENU --- */
-.hamburger { width:25px; cursor:pointer; display:flex; flex-direction:column; justify-content:space-between; height:18px; }
-.hamburger div { height:3px; background:#00ff99; border-radius:2px; transition:0.3s; }
-.menu { position:absolute; top:3rem; right:0; background:rgba(0,0,0,0.95); border:1px solid #00ff99; display:none; flex-direction:column; padding:1rem; gap:0.5rem; z-index:15; }
-.menu a { color:#00ff99; text-decoration:none; font-size:1rem; transition:0.3s; }
-.menu a:hover { color:black; background:#00ff99; padding:0.2rem 0.5rem; border-radius:3px; }
+/* DROPDOWN MENU */
+.dropdown { position:relative; cursor:pointer; user-select:none; }
+.dropdown span { display:flex; align-items:center; gap:0.2rem; font-size:0.9rem; }
+.dropdown span span { animation:neonFade 1.5s infinite alternate; }
+@keyframes neonFade { 0%{text-shadow:0 0 3px #00ff99;} 100%{text-shadow:0 0 15px #00ff99,0 0 30px #00ff99;} }
+.dropdown-content { position:absolute; top:2rem; right:0; background:rgba(0,0,0,0.95); border:1px solid #00ff99; border-radius:8px; display:none; flex-direction:column; min-width:160px; z-index:20; }
+.dropdown-content button { background:none; border:none; color:#00ff99; padding:0.8rem; text-align:left; cursor:pointer; transition:0.2s; font-family:'Orbitron', monospace; }
+.dropdown-content button:hover { background:#00ff99; color:black; }
 
-/* --- MAIN CONTENT --- */
-main { padding:6rem 2rem 2rem; display:flex; flex-wrap:wrap; gap:1rem; position:relative; z-index:5; }
+/* PRODUCTS GRID */
+.products { display:flex; flex-wrap:wrap; margin-top:100px; justify-content:center; gap:20px; padding:0 1rem; z-index:5; position:relative; }
+.product-box { position:relative; background:#111; border-radius:15px; width:calc(50% - 20px); padding:1rem; text-align:center; overflow:hidden; cursor:pointer; transition:0.3s, transform 0.3s; border:1px solid rgba(0,255,153,0.3); opacity:0; transform:translateY(20px); animation:fadeInUp 1s forwards; }
+.product-box:nth-child(1) { animation-delay:0.2s; }
+.product-box:nth-child(2) { animation-delay:0.4s; }
+.product-box:nth-child(3) { animation-delay:0.6s; }
+.product-box:nth-child(4) { animation-delay:0.8s; }
+.product-box:nth-child(5) { animation-delay:1s; }
 
-/* --- PRODUCT BOXES --- */
-.product-box { position:relative; background:#111; border-radius:12px; overflow:hidden; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; color:#00ff99; cursor:pointer; transition:0.3s; }
-.product-box span { font-size:1rem; margin-top:0.5rem; }
-.product-box button { margin-top:0.5rem; background:transparent; border:1px solid #00ff99; color:#00ff99; padding:0.5rem 1rem; border-radius:6px; cursor:pointer; transition:0.3s; }
-.product-box button:hover { background:#00ff99; color:black; }
-.product-box canvas { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+@keyframes fadeInUp { to { opacity:1; transform:translateY(0); } }
 
-/* --- STAGGERED LAYOUT --- */
-.product-full { flex:1 1 100%; height:200px; }
-.product-half { flex:0 1 48%; height:180px; }
+.product-box:hover { transform:translateY(-5px); box-shadow:0 0 20px rgba(0,255,153,0.2),0 0 40px rgba(0,255,153,0.1); }
+.product-box h3 { margin-bottom:0.5rem; font-size:1.2rem; }
+.product-box p { margin-bottom:0.8rem; font-size:1rem; }
+.purchase-btn { border:1px solid #00ff99; background:none; color:#00ff99; padding:0.5rem 1rem; border-radius:10px; cursor:pointer; transition:0.3s; }
+.purchase-btn:hover { background:#00ff99; color:black; }
 
-/* --- RESPONSIVE --- */
-@media(max-width:500px){ .product-half{ flex:0 1 48%; height:150px; } .product-full{ flex:1 1 100%; height:150px; } }
+/* NEON CIRCULATING OUTLINE */
+.neon-circle { position:absolute; top:-5px; left:-5px; width:calc(100% + 10px); height:calc(100% + 10px); border:2px solid #00ff99; border-radius:15px; animation:circleRotate 4s linear infinite; pointer-events:none; opacity:0.5; }
+@keyframes circleRotate { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+
+/* BACKGROUND FLOATING DOTS */
+body::before { content:''; position:absolute; inset:0; pointer-events:none; opacity:0.08; background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.4"/></svg>'); mix-blend-mode: overlay; }
+
+/* MOBILE */
+@media(max-width:500px){ .product-box { width:45%; } }
 </style>
 </head>
 <body>
@@ -54,142 +62,73 @@ main { padding:6rem 2rem 2rem; display:flex; flex-wrap:wrap; gap:1rem; position:
 <canvas id="bgCanvas"></canvas>
 
 <header>
-  <div id="logo">
-    <span class="logo-letter">R</span>
-    <span class="logo-letter">R</span>
-    <span class="logo-letter">O</span>
-    <span class="logo-letter">L</span>
-    <span class="logo-letter">L</span>
+  <div class="logo">
+    <span>R</span><span>R</span><span>O</span><span>L</span><span>L</span>
   </div>
-  <div style="position:relative;">
-    <div class="hamburger" id="hamburgerBtn"><div></div><div></div><div></div></div>
-    <div class="menu" id="menuItems">
-      <a href="#">Login</a>
-      <a href="#">Signup</a>
-      <a href="#">Account</a>
-      <a href="#">Balance</a>
-      <a href="#">Cart</a>
+  <div class="dropdown">
+    <span>Menu ▼</span>
+    <div class="dropdown-content">
+      <button onclick="alert('Login clicked')">Login</button>
+      <button onclick="alert('Signup clicked')">Signup</button>
+      <button onclick="alert('Account clicked')">Account</button>
+      <button onclick="alert('Settings clicked')">Settings</button>
     </div>
   </div>
 </header>
 
-<main id="mainContent">
-  <!-- Product Boxes -->
-  <div class="product-box product-full">
-    <span>Product 1</span>
-    <span>$19.99</span>
-    <button>Purchase</button>
-    <canvas></canvas>
+<div class="products" id="products">
+  <div class="product-box">
+    <div class="neon-circle"></div>
+    <h3>Product 1</h3>
+    <p>$10</p>
+    <button class="purchase-btn" onclick="alert('Purchase Product 1 coming soon')">Purchase</button>
   </div>
-  <div class="product-box product-half">
-    <span>Product 2</span>
-    <span>$29.99</span>
-    <button>Purchase</button>
-    <canvas></canvas>
+  <div class="product-box">
+    <div class="neon-circle"></div>
+    <h3>Product 2</h3>
+    <p>$15</p>
+    <button class="purchase-btn" onclick="alert('Purchase Product 2 coming soon')">Purchase</button>
   </div>
-  <div class="product-box product-half">
-    <span>Product 3</span>
-    <span>$9.99</span>
-    <button>Purchase</button>
-    <canvas></canvas>
+  <div class="product-box">
+    <div class="neon-circle"></div>
+    <h3>Product 3</h3>
+    <p>$20</p>
+    <button class="purchase-btn" onclick="alert('Purchase Product 3 coming soon')">Purchase</button>
   </div>
-  <div class="product-box product-half">
-    <span>Product 4</span>
-    <span>$14.99</span>
-    <button>Purchase</button>
-    <canvas></canvas>
+  <div class="product-box">
+    <div class="neon-circle"></div>
+    <h3>Product 4</h3>
+    <p>$25</p>
+    <button class="purchase-btn" onclick="alert('Purchase Product 4 coming soon')">Purchase</button>
   </div>
-  <div class="product-box product-half">
-    <span>Product 5</span>
-    <span>$24.99</span>
-    <button>Purchase</button>
-    <canvas></canvas>
+  <div class="product-box">
+    <div class="neon-circle"></div>
+    <h3>Product 5</h3>
+    <p>$30</p>
+    <button class="purchase-btn" onclick="alert('Purchase Product 5 coming soon')">Purchase</button>
   </div>
-</main>
+</div>
 
 <script>
-// --- FLOATING DOTS BACKGROUND ---
-const canvasBG = document.getElementById('bgCanvas');
-const ctxBG = canvasBG.getContext('2d');
-canvasBG.width = window.innerWidth;
-canvasBG.height = window.innerHeight;
+// DROPDOWN FUNCTION
+const dropdown = document.querySelector('.dropdown');
+const dropdownContent = document.querySelector('.dropdown-content');
+dropdown.addEventListener('click',()=>{ 
+  dropdownContent.style.display = dropdownContent.style.display==='flex' ? 'none':'flex'; 
+});
+
+// FLOATING DOTS BACKGROUND
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+const numDots = 80;
 const dots = [];
-const numDots = 100;
-for(let i=0;i<numDots;i++){
-    dots.push({x:Math.random()*canvasBG.width,y:Math.random()*canvasBG.height,r:Math.random()*2+1,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3});
-}
-function animateDots(){
-    ctxBG.clearRect(0,0,canvasBG.width,canvasBG.height);
-    dots.forEach(d=>{
-        ctxBG.beginPath();
-        ctxBG.arc(d.x,d.y,d.r,0,Math.PI*2);
-        ctxBG.fillStyle='rgba(0,255,153,0.5)';
-        ctxBG.fill();
-        d.x += d.vx; d.y += d.vy;
-        if(d.x<0||d.x>canvasBG.width)d.vx*=-1;
-        if(d.y<0||d.y>canvasBG.height)d.vy*=-1;
-    });
-    requestAnimationFrame(animateDots);
-}
-animateDots();
-window.addEventListener('resize',()=>{canvasBG.width=window.innerWidth;canvasBG.height=window.innerHeight;});
-
-// --- HAMBURGER MENU ---
-const hamburger=document.getElementById('hamburgerBtn');
-const menu=document.getElementById('menuItems');
-let menuOpen=false;
-hamburger.addEventListener('click',()=>{
-    menuOpen=!menuOpen;
-    menu.style.display = menuOpen ? 'flex' : 'none';
-    if(menuOpen){
-        menu.style.opacity=0;
-        menu.style.transform='translateY(-10px)';
-        let op=0,pos=-10;
-        const anim=setInterval(()=>{
-            op+=0.05;
-            pos+=1;
-            menu.style.opacity=op;
-            menu.style.transform=`translateY(${pos}px)`;
-            if(op>=1){clearInterval(anim); menu.style.transform='translateY(0)';}
-        },15);
-    }
-});
-
-// --- NEON CIRCLE ANIMATION ON BOXES ---
-document.querySelectorAll('.product-box').forEach(box=>{
-    const canvas=box.querySelector('canvas');
-    const ctx=canvas.getContext('2d');
-    canvas.width=box.offsetWidth;
-    canvas.height=box.offsetHeight;
-    let angle=0;
-    function animateCircle(){
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.strokeStyle='rgba(0,255,153,0.6)';
-        ctx.lineWidth=2;
-        ctx.beginPath();
-        const x=canvas.width/2 + Math.cos(angle)*canvas.width/3.5;
-        const y=canvas.height/2 + Math.sin(angle)*canvas.height/3.5;
-        ctx.arc(x,y,20,0,Math.PI*2);
-        ctx.stroke();
-        angle+=0.03;
-        requestAnimationFrame(animateCircle);
-    }
-    animateCircle();
-    window.addEventListener('resize',()=>{canvas.width=box.offsetWidth; canvas.height=box.offsetHeight;});
-});
-
-// --- PRODUCT BUTTONS ---
-document.querySelectorAll('.product-box button').forEach(btn=>{
-    btn.addEventListener('click',()=>{alert('Purchase menu coming soon');});
-});
-
-// --- MENU BUTTONS ---
-document.querySelectorAll('.menu a').forEach(a=>{
-    a.addEventListener('click',(e)=>{
-        e.preventDefault();
-        alert(a.textContent+' coming soon');
-    });
-});
+class Dot { constructor(){ this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.radius=Math.random()*2+1; this.vx=(Math.random()-0.5)*0.5; this.vy=(Math.random()-0.5)*0.5; } draw(){ ctx.beginPath(); ctx.arc(this.x,this.y,this.radius,0,Math.PI*2); ctx.fillStyle='rgba(0,255,153,0.8)'; ctx.fill(); } update(){ this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>canvas.width)this.vx*=-1; if(this.y<0||this.y>canvas.height)this.vy*=-1; this.draw(); } }
+for(let i=0;i<numDots;i++){ dots.push(new Dot()); }
+function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); dots.forEach(dot=>dot.update()); requestAnimationFrame(animate); }
+animate();
+window.addEventListener('resize',()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight;});
 </script>
 
 </body>
